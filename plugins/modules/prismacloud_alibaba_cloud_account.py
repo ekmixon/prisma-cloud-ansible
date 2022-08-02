@@ -96,11 +96,11 @@ def identify(client, name):
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            accountId=dict(),
+            accountId={},
             enabled=dict(type='bool', default=False),
             groupIds=dict(type='list'),
-            name=dict(),
-            ramArn=dict(),
+            name={},
+            ramArn={},
             state=pc.state_spec(),
         ),
         required_one_of=[
@@ -109,12 +109,11 @@ def main():
         supports_check_mode=True,
     )
 
+
     client = pc.PrismaCloudRequest(module)
 
     # Variables.
     obj = None
-    results = {'changed': False}
-
     # Retrieve obj details.
     if module.params['accountId'] is not None:
         try:
@@ -126,8 +125,7 @@ def main():
         if the_id is not None:
             obj = client.get(['cloud', 'alibaba_cloud', the_id])
 
-    results['before'] = obj
-
+    results = {'changed': False, 'before': obj}
     if module.params['state'] == 'present':
         fields = ['accountId', 'enabled', 'groupIds', 'name', 'ramArn']
         req_obj = {

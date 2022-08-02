@@ -92,17 +92,18 @@ from ansible_collections.paloaltonetworks.prismacloud.plugins.module_utils impor
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            name=dict(),
-            policyId=dict(),
+            name={},
+            policyId={},
             policyType=dict(choices=['config', 'audit_event', 'network']),
             systemDefault=dict(type='bool'),
-            cloudType=dict(),
+            cloudType={},
             severity=dict(choices=['low', 'medium', 'high']),
             details=pc.details_spec(),
             search_type=pc.search_type_spec(),
         ),
         supports_check_mode=False,
     )
+
 
     client = pc.PrismaCloudRequest(module)
 

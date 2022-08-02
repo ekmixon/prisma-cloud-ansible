@@ -78,8 +78,8 @@ from ansible_collections.paloaltonetworks.prismacloud.plugins.module_utils impor
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            name=dict(),
-            id=dict(),
+            name={},
+            id={},
             cloudType=dict(type='list'),
             systemDefault=dict(type='bool'),
             details=pc.details_spec(),
@@ -87,6 +87,7 @@ def main():
         ),
         supports_check_mode=False,
     )
+
 
     client = pc.PrismaCloudRequest(module)
 

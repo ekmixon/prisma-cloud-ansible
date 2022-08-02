@@ -152,28 +152,28 @@ def main():
                     ['accountId', 'name'],
                 ],
                 options=dict(
-                    accountId=dict(),
+                    accountId={},
                     enabled=dict(type='bool', default=False),
                     groupIds=dict(type='list'),
-                    name=dict(),
+                    name={},
                 ),
             ),
             compressionEnabled=dict(type='bool'),
-            dataflowEnabledProject=dict(),
-            flowLogStorageBucket=dict(),
+            dataflowEnabledProject={},
+            flowLogStorageBucket={},
             credentials=dict(
                 type='dict',
                 options=dict(
-                    type=dict(),
-                    project_id=dict(),
-                    private_key_id=dict(),
-                    private_key=dict(),
-                    client_email=dict(),
-                    client_id=dict(),
-                    auth_uri=dict(),
-                    token_uri=dict(),
-                    auth_provider_x509_cert_url=dict(),
-                    client_x509_cert_url=dict(),
+                    type={},
+                    project_id={},
+                    private_key_id={},
+                    private_key={},
+                    client_email={},
+                    client_id={},
+                    auth_uri={},
+                    token_uri={},
+                    auth_provider_x509_cert_url={},
+                    client_x509_cert_url={},
                 ),
             ),
             state=pc.state_spec(),
@@ -181,12 +181,11 @@ def main():
         supports_check_mode=True,
     )
 
+
     client = pc.PrismaCloudRequest(module)
 
     # Variables.
     obj = None
-    results = {'changed': False}
-
     # Retrieve obj details.
     if module.params['cloudAccount']['accountId'] is not None:
         try:
@@ -198,16 +197,7 @@ def main():
         if the_id is not None:
             obj = client.get(['cloud', 'gcp', the_id])
 
-    results['before'] = obj
-
-    fields = ['cloudAccount', 'credentials', 'compressionEnabled', 'dataflowEnabledProject', 'flowLogStorageBucket']
-    ca_fields = ['accountId', 'enabled', 'groupIds', 'name']
-    c_fields = [
-        'type', 'project_id', 'private_key_id', 'private_key', 'client_email',
-        'client_id', 'auth_uri', 'token_uri',
-        'auth_provider_x509_cert_url', 'client_x509_cert_url',
-    ]
-
+    results = {'changed': False, 'before': obj}
     if module.params['state'] == 'present':
         req_obj = {
             'cloudAccount': {
@@ -231,6 +221,14 @@ def main():
                 'client_x509_cert_url': '',
             },
         }
+        fields = ['cloudAccount', 'credentials', 'compressionEnabled', 'dataflowEnabledProject', 'flowLogStorageBucket']
+        ca_fields = ['accountId', 'enabled', 'groupIds', 'name']
+        c_fields = [
+            'type', 'project_id', 'private_key_id', 'private_key', 'client_email',
+            'client_id', 'auth_uri', 'token_uri',
+            'auth_provider_x509_cert_url', 'client_x509_cert_url',
+        ]
+
         for field in fields:
             if field == 'cloudAccount':
                 ca = module.params['cloudAccount']

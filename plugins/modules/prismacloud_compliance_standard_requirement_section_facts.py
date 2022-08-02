@@ -77,12 +77,13 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             requirementId=dict(required=True),
-            sectionId=dict(),
+            sectionId={},
             systemDefault=dict(type='bool'),
             search_type=pc.search_type_spec(),
         ),
         supports_check_mode=False,
     )
+
 
     client = pc.PrismaCloudRequest(module)
 

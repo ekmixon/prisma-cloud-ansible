@@ -99,12 +99,12 @@ def identify(client, name):
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            accountId=dict(),
+            accountId={},
             enabled=dict(type='bool', default=False),
             externalId=dict(no_log=True),
             groupIds=dict(type='list'),
-            name=dict(),
-            roleArn=dict(),
+            name={},
+            roleArn={},
             state=pc.state_spec(),
         ),
         required_one_of=[
@@ -113,12 +113,11 @@ def main():
         supports_check_mode=True,
     )
 
+
     client = pc.PrismaCloudRequest(module)
 
     # Variables.
     obj = None
-    results = {'changed': False}
-
     # Retrieve obj details.
     if module.params['accountId'] is not None:
         try:
@@ -130,8 +129,7 @@ def main():
         if the_id is not None:
             obj = client.get(['cloud', 'aws', the_id])
 
-    results['before'] = obj
-
+    results = {'changed': False, 'before': obj}
     if module.params['state'] == 'present':
         fields = ['accoundId', 'enabled', 'externalId', 'groupIds', 'name', 'roleArn']
         req_obj = {

@@ -126,28 +126,27 @@ def main():
                     ['accountId', 'name'],
                 ],
                 options=dict(
-                    accountId=dict(),
+                    accountId={},
                     enabled=dict(type='bool', default=False),
                     groupIds=dict(type='list'),
-                    name=dict(),
+                    name={},
                 ),
             ),
-            clientId=dict(),
-            key=dict(),
+            clientId={},
+            key={},
             monitorFlowLogs=dict(type='bool'),
-            tenantId=dict(),
-            servicePrincipalId=dict(),
+            tenantId={},
+            servicePrincipalId={},
             state=pc.state_spec(),
         ),
         supports_check_mode=True,
     )
 
+
     client = pc.PrismaCloudRequest(module)
 
     # Variables.
     obj = None
-    results = {'changed': False}
-
     # Retrieve obj details.
     if module.params['cloudAccount']['accountId'] is not None:
         try:
@@ -159,11 +158,7 @@ def main():
         if the_id is not None:
             obj = client.get(['cloud', 'azure', the_id])
 
-    results['before'] = obj
-
-    fields = ['cloudAccount', 'clientId', 'key', 'monitorFlowLogs', 'tenantId', 'servicePrincipalId']
-    ca_fields = ['accountId', 'enabled', 'groupIds', 'name']
-
+    results = {'changed': False, 'before': obj}
     if module.params['state'] == 'present':
         req_obj = {
             'cloudAccount': {
@@ -178,6 +173,9 @@ def main():
             'tenantId': '',
             'servicePrincipalId': '',
         }
+        fields = ['cloudAccount', 'clientId', 'key', 'monitorFlowLogs', 'tenantId', 'servicePrincipalId']
+        ca_fields = ['accountId', 'enabled', 'groupIds', 'name']
+
         for field in fields:
             if field == 'cloudAccount':
                 ca = module.params['cloudAccount']

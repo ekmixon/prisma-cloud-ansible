@@ -80,7 +80,6 @@ class HttpApi(HttpApiBase):
             )
 
 
-            # Only ever seen one error at a time, but it's still a list, so....
             for x in errinfo:
                 if x['i18nKey'].endswith('_already_exists'):
                     raise errors.AlreadyExistsError("object already exists", errinfo)
@@ -88,8 +87,7 @@ class HttpApi(HttpApiBase):
                     raise errors.ObjectNotFoundError("object not found", errinfo)
                 elif x['i18nKey'] == 'invalid_credentials':
                     raise errors.AuthenticationError("invalid credentials provided", errinfo)
-            else:
-                raise errors.PrismaCloudError("error", errinfo)
+            raise errors.PrismaCloudError("error", errinfo)
 
         ans = None
         try:

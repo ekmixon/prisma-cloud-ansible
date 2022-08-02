@@ -81,14 +81,15 @@ from ansible_collections.paloaltonetworks.prismacloud.plugins.module_utils impor
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-            name=dict(),
-            id=dict(),
+            name={},
+            id={},
             cloudType=dict(choices=['aws', 'azure', 'gcp', 'alibaba_cloud']),
             details=pc.details_spec(),
             search_type=pc.search_type_spec(),
         ),
         supports_check_mode=False,
     )
+
 
     client = pc.PrismaCloudRequest(module)
 

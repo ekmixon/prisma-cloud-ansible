@@ -80,14 +80,15 @@ def main():
     module = AnsibleModule(
         argument_spec=dict(
             complianceId=dict(required=True),
-            name=dict(),
-            id=dict(),
+            name={},
+            id={},
             systemDefault=dict(type='bool'),
             details=pc.details_spec(),
             search_type=pc.search_type_spec(),
         ),
         supports_check_mode=False,
     )
+
 
     client = pc.PrismaCloudRequest(module)
 
